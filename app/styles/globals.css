@@ -1,0 +1,224 @@
+/* ===================== IMPORTS FIRST (required by CSS spec) ===================== */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ===================== THEME TOKENS ===================== */
+@theme {
+  --color-sol-blue: #0A84FF;
+  --color-sol-blue-light: #38B6FF;
+  --color-sol-blue-dark: #0055CC;
+  --color-sol-silver: #C8D6E5;
+  --color-sol-silver-dark: #8899AA;
+  --color-sol-bg: #020408;
+  --color-sol-surface: #060C14;
+  --color-sol-border: #0A1525;
+
+  --font-display: 'Exo 2', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delay: float 6s ease-in-out 2s infinite;
+  --animate-float-delay2: float 6s ease-in-out 4s infinite;
+  --animate-pulse-blue: pulseBlue 3s ease-in-out infinite;
+  --animate-scan: scan 4s linear infinite;
+  --animate-slide-up: slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+  --animate-fade-in: fadeIn 0.8s ease forwards;
+  --animate-glow-pulse: glowPulse 2s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes pulseBlue {
+    0%, 100% { box-shadow: 0 0 20px rgba(10,132,255,0.3); }
+    50% { box-shadow: 0 0 60px rgba(10,132,255,0.8); }
+  }
+  @keyframes scan {
+    0% { transform: translateY(-100%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(400%); opacity: 0; }
+  }
+  @keyframes slideUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(10,132,255,0.6)); }
+    50% { filter: drop-shadow(0 0 24px rgba(10,132,255,1)); }
+  }
+  @keyframes menuEnter {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+}
+
+/* ===================== BASE ===================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #0A84FF #020408;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #020408; }
+::-webkit-scrollbar-thumb { background: #0A84FF; border-radius: 2px; }
+
+body {
+  background: #020408;
+  color: #C8D6E5;
+  font-family: 'Rajdhani', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(10,132,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,132,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===================== UTILITIES ===================== */
+.sol-gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #38B6FF 40%, #0A84FF 80%, #C8D6E5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sol-blue-text {
+  background: linear-gradient(90deg, #0A84FF, #38B6FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sol-card {
+  background: linear-gradient(135deg, rgba(6,12,20,0.9) 0%, rgba(10,20,35,0.7) 100%);
+  border: 1px solid rgba(10,132,255,0.15);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+.sol-card:hover {
+  border-color: rgba(10,132,255,0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(10,132,255,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.sol-btn-primary {
+  background: linear-gradient(135deg, #0A84FF, #0055CC);
+  border: 1px solid rgba(56,182,255,0.3);
+  color: white;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sol-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transition: left 0.4s ease;
+}
+.sol-btn-primary:hover::before { left: 100%; }
+.sol-btn-primary:hover {
+  box-shadow: 0 0 30px rgba(10,132,255,0.5);
+  transform: translateY(-1px);
+}
+
+.sol-btn-outline {
+  border: 1px solid rgba(10,132,255,0.4);
+  color: #C8D6E5;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sol-btn-outline:hover {
+  border-color: #0A84FF;
+  color: white;
+  box-shadow: 0 0 20px rgba(10,132,255,0.2);
+}
+
+.glow-border {
+  box-shadow: 0 0 0 1px rgba(10,132,255,0.2), 0 0 20px rgba(10,132,255,0.1);
+}
+
+.sol-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(10,132,255,0.6), transparent);
+}
+
+.section-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: #0A84FF;
+  text-transform: uppercase;
+  display: block;
+}
+
+.clip-corner {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+.clip-corner-lg {
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+.mobile-menu-enter {
+  animation: menuEnter 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+
+.tech-pill {
+  transition: all 0.25s ease;
+  border: 1px solid rgba(10,132,255,0.1);
+}
+.tech-pill:hover {
+  border-color: rgba(10,132,255,0.5);
+  background: rgba(10,132,255,0.08);
+  color: white;
+  transform: scale(1.05);
+}
